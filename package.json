@@ -1,0 +1,27 @@
+{
+  "name": "graphik",
+  "version": "0.1.0",
+  "description": "tool for creating node based graphics",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyTaus/graphik.git"
+  },
+  "author": "Ryan Taus <taus.ryan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RyTaus/graphik/issues"
+  },
+  "homepage": "https://github.com/RyTaus/graphik#readme",
+  "dependencies": {
+    "d3": "^4.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
