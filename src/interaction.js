@@ -1,11 +1,15 @@
-/*
-  Interaction class handles events. Pretty much just a wrapped for d3's on that
-  makes some things a bit easier.
+/**
+* Interaction class handles events. Pretty much just a wrapped for d3's on that
+* The only requirement for an interaction is that it has a function applyTo.
+* There are several Interactions built in.
 */
 const d3 = require('d3');
 
-const Component = require('./component.js')
-
+const Component = require('./component.js');
+/**
+* Interaction class is the generic action class. This is used for most events
+* such as click, mouseover, contex-menu, etc...
+*/
 class Interaction {
   constructor(type, action, bubble) {
     this.type = type;
@@ -18,6 +22,9 @@ class Interaction {
   }
 }
 
+/**
+* Interaction.Drag is the default way to add a drag event.
+*/
 Interaction.Drag = class Drag {
   constructor(onStart = () => {}, onMove = () => {}, onEnd = () => {}) {
     this.type = 'drag';
@@ -35,12 +42,19 @@ Interaction.Drag = class Drag {
   }
 };
 
+/**
+* Adding the draggable makes an element draggable.
+*/
 Interaction.Drag.draggable = () => new Interaction.Drag(
   () => {},
   (comp) => { comp.update('x', comp.properties.x + d3.event.dx); comp.update('y', comp.properties.y + d3.event.dy); },
   () => {}
 );
 
+/**
+* Adding the spawn makes an element spawn the chosen component type, and then
+* drag that when moving mouse in this drag function.
+*/
 Interaction.Drag.Spawn = class SpawnDrag {
   constructor(template, canvas) {
     this.component = new Component(template);
@@ -63,17 +77,6 @@ Interaction.Drag.Spawn = class SpawnDrag {
     );
   }
 };
-
-// new Interaction.Drag(
-//   (comp) => {
-//     const newNode = new Component(template, { x: comp.properties.x, y: comp.properties.y });
-//     console.log('PLEASE PRINT THIS');
-//     canvas.addComponent(newNode);
-//     newNode.render();
-//   },
-//   () => {},
-//   () => {}
-// );
 
 Interaction.type = {
 

@@ -4,7 +4,8 @@
   "description": "tool for creating node based graphics",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "browserify ./live_test/main.js -o ./live_test/bundle.js"
   },
   "repository": {
     "type": "git",
