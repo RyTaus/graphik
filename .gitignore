@@ -1,2 +1,3 @@
 node_modules
-live_test
+live_test/bundle.js
+live_test/styles.css
