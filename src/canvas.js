@@ -11,7 +11,7 @@ class Canvas {
   }
 
   addComponent(component) {
-    this.components.push(component);
+    this.components.push(component.addTo(this));
     return this;
   }
 

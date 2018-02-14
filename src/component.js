@@ -7,38 +7,44 @@
 */
 
 class Component {
-  constructor(canvas, template, initialValues = {}) {
-    this.canvas = canvas;
-    this.svg = canvas.svg;
+  constructor(template, initialValues = {}) {
     this.id = Component.makeId(template.name);
-    this.initialize(template.tag);
+    this.name = template.name;
+    this.tag = template.tag;
+    this.interactions = template.interactions;
+
 
     this.children = [];
 
-    // properties contains all the properties to a specific component and how
-    // or if the render of the component changes on change.
-    // prop: { value, update }
     this.properties = {};
+    this.updates = {};
+
     Object.keys(template.properties).forEach((key) => {
-      this.properties[key].value = initialValues[key] || template.properties[key].value;
-      this.properties[key].update = template.properties[key].update;
+      this.properties[key] = initialValues[key] || template.properties[key].value;
+      this.updates[key] = template.properties[key].update;
     });
-
-    Object.keys(template.interactions).forEach((key) => {
-      this.node.on(key, template.interactions[key].action);
-    });
-
-    this.interactions = template.interactions;
   }
 
-  initialize(tag) {
-    this.node = this.svg.append(tag).attr('id', this.id);
+  addTo(canvas) {
+    this.node = canvas.svg.append(this.tag).attr('id', this.id);
+    Object.keys(this.interactions).forEach((key) => {
+      this.interactions[key].applyTo(this);
+      this.node.on(key, () => this.interactions[key].action(this));
+    });
+    // delete this.interactions;
+    return this;
   }
 
+  /**
+  * This function updates a property to the value, then calls the perspective update function.
+  * @param {String, Any}
+  * @returns {Component}
+  */
   update(prop, value) {
     // What if prop doesnt exist??
-    this.properties[prop].value = value;
-    this.properties[prop].update(this.properties);
+    // console.log(prop, this.updates[prop]);
+    this.properties[prop] = value;
+    this.updates[prop](this);
     return this;
   }
 
@@ -49,7 +55,12 @@ class Component {
   }
 
   render() {
-    this.properties.forEach(prop => prop.update(this.properties));
+    Object.keys(this.properties).forEach(
+      (prop) => {
+        this.updates[prop](this);
+      }
+    );
+    this.node.classed(this.name, true);
     return this;
   }
 }
@@ -59,7 +70,7 @@ Component.makeId = (name) => {
   if (!Component.idMap[name]) {
     Component.idMap[name] = 0;
   }
-  return `comp_${Component.idMap[name]++}`;
+  return `${name}_${Component.idMap[name]++}`;
 };
 
 module.exports = Component;

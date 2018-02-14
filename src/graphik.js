@@ -16,4 +16,4 @@ Graphik.Component = Component;
 Graphik.Canvas = Canvas;
 Graphik.Interaction = Interaction;
 
-module.expmorts = Graphik;
+module.exports = Graphik;
