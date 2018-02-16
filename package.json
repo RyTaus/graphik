@@ -2,7 +2,7 @@
   "name": "graphik",
   "version": "0.1.0",
   "description": "tool for creating node based graphics",
-  "main": "index.js",
+  "main": "src/graphik.js",
   "scripts": {
     "test": "test",
     "build": "browserify ./live_test/main.js -o ./live_test/bundle.js"
